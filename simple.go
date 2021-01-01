@@ -150,13 +150,9 @@ func (c *SimpleCache) getWithLoader(key interface{}, isWait bool) (interface{}, 
 		}
 		c.mu.Lock()
 		defer c.mu.Unlock()
-		item, err := c.set(key, v)
+		_, err := c.set(key, v)
 		if err != nil {
 			return nil, err
-		}
-		if expiration != nil {
-			t := c.clock.Now().Add(*expiration)
-			item.(*simpleItem).expiration = &t
 		}
 		return v, nil
 	}, isWait)
